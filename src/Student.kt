@@ -29,7 +29,23 @@ class Student(
     var git = git
         get() = field
         set(value) { field = value }
+    constructor(id: Int,
+                surname: String,
+                name: String,
+                lastname: String,
+                phone: String) : this(id, surname, name, lastname) {
+        this.phone = phone
+    }
 
+    constructor(id: Int,
+                surname: String,
+                name: String,
+                lastname: String,
+                email: String,
+                git: String) : this(id, surname, name, lastname) {
+        this.email = email
+        this.git = git
+    }
     override fun toString(): String {
         var str = "[ID $id] $surname $name $lastname"
         if (phone != null) str += "\nНомер телефона: $phone"
