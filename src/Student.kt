@@ -8,6 +8,10 @@ class Student(
     email: String? = null,
     git: String? = null
 ) {
+    companion object {
+        private val phoneRegex = Regex("""^\+?[0-9]{11}$""")
+        fun isValidPhone(value: String?) = value == null || phoneRegex.matches(value)
+    }
     var surname = surname
         get() = field
         set(value) { field = value }
@@ -19,7 +23,10 @@ class Student(
         set(value) { field = value }
     var phone = phone
         get() = field
-        set(value) { field = value }
+        set(value) {
+            if (isValidPhone(value)) field = value
+            else throw IllegalArgumentException("Unacceptable phone number")
+        }
     var telegram = telegram
         get() = field
         set(value) { field = value }
