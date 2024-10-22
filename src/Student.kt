@@ -91,6 +91,19 @@ class Student(
         hashMap["email"]    as? String,
         hashMap["git"]      as? String,
     )
+
+    constructor(row: String) : this(row.split(' '))
+    private constructor(row: List<String>) : this(
+        row[0].toInt(),
+        row[1],
+        row[2],
+        row[3],
+        row[4].ifEmpty { null },
+        row[5].ifEmpty { null },
+        row[6].ifEmpty { null },
+        row[7].ifEmpty { null }
+    )
+    
     override fun toString(): String {
         var str = "[ID $id] $surname $name $lastname"
         if (phone != null) str += "\nНомер телефона: $phone"
