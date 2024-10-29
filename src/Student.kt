@@ -134,4 +134,18 @@ class Student(
         if (hashMap.containsKey("telegram")) telegram = hashMap["telegram"]
         if (hashMap.containsKey("email")) email = hashMap["email"]
     }
+
+fun getInfo() : String {
+        val git = "git${if (this.git != null) ": ${this.git}" else " not added"}"
+        val contact = getContact().let {
+            if (it != null) "contact using ${it.first}: ${it.second}" else "no contact information"
+        }
+        return "Student ${getInitials()}, $git, $contact"
+    }
+    private fun getInitials() = "$surname ${name[0]}.${if (lastname.isNotEmpty()) "${lastname[0]}." else ""}"
+    private fun getContact() =
+        if(telegram != null) Pair("telegram", telegram)
+        else if (phone != null) Pair("phone", phone)
+        else if (email != null) Pair("email", email)
+        else null
 }
