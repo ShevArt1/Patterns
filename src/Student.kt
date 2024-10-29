@@ -9,7 +9,7 @@ class Student(
     git: String? = null
 ) {
     companion object {
-        private val nameRegex = Regex("""^[A-Za-zА-Яа-я-]+$""")
+        private val nameRegex = Regex("""^[A-Za-zА-Яа-я]+$""")
         private val phoneRegex = Regex("""^\+?[0-9]{11}$""")
         private val telegramRegex = Regex("""^@\w{5,32}$""")
         private val emailRegex = Regex("""^[A-Za-z0-9_+-]+(\.[A-Za-z0-9_+-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)+$""")
@@ -91,10 +91,13 @@ class Student(
         hashMap["email"]    as? String,
         hashMap["git"]      as? String,
     )
+    constructor(row: String) : this(row.split(';').also {
+        if (it.size != 8 || it.any { "\n" in it })
+            throw IllegalArgumentException("String has the wrong format")
+    })
 
-    constructor(row: String) : this(row.split(' '))
     private constructor(row: List<String>) : this(
-        row[0].toInt(),
+        row[0].toIntOrNull().let { it ?: throw IllegalArgumentException("ID must be an integer") },
         row[1],
         row[2],
         row[3],
@@ -103,7 +106,6 @@ class Student(
         row[6].ifEmpty { null },
         row[7].ifEmpty { null }
     )
-    
     override fun toString(): String {
         var str = "[ID $id] $surname $name $lastname"
         if (phone != null) str += "\nНомер телефона: $phone"
@@ -114,7 +116,7 @@ class Student(
     }
 
     fun show() = println(this.toString())
-    
+
     fun checkGit(): Boolean {
         val result = git != null
         println("У студента $surname $name $lastname гит${if (result) " есть" else "а нет"}")
