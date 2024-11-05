@@ -1,0 +1,3 @@
+5;I;Am;Megatron;;;decepticon_leader@evil.com;
+5;Иванов;Иван;Иванович;+79123456789;@ivanov;ivanov@example.com;https://github.com/ivanov
+6;Ф;И;О;+79123456789;;;
