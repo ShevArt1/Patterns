@@ -20,6 +20,14 @@ class Student(
                 }
             }
         }
+        fun writeToTxt(filePath: String, students: Iterable<Student>) {
+            val file = File(filePath)
+            file.printWriter().use {
+                for (student in students) {
+                    it.println(student.toStringRow())
+                }
+            }
+        }
     }
     var surname = surname
         get() = field
@@ -145,4 +153,9 @@ class Student(
         else if (phone != null) Pair("phone", phone)
         else if (email != null) Pair("email", email)
         else null
+
+
+    private fun toStringRow() = listOf(
+        id.toString(), surname, name, lastname, phone ?: "", telegram ?: "", email ?: "", git ?: ""
+    ).joinToString(";")
 }
