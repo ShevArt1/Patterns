@@ -1,3 +1,5 @@
+import java.io.File
+import java.io.FileNotFoundException
 class Student(
     override val id: Int,
     surname: String,
@@ -8,6 +10,17 @@ class Student(
     email: String? = null,
     git: String? = null
 ) :SuperStudent() {
+    companion object {
+        fun readFromTxt(filePath: String): List<Student> {
+            val file = File(filePath)
+            if (!file.exists()) throw FileNotFoundException("File '$filePath' is not found")
+            return buildList {
+                for (line in file.readLines()) {
+                    add(Student(line))
+                }
+            }
+        }
+    }
     var surname = surname
         get() = field
         set(value) {
