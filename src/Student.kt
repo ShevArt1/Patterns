@@ -1,5 +1,5 @@
 class Student(
-    val id: Int,
+    override val id: Int,
     surname: String,
     name: String,
     lastname: String,
@@ -7,21 +7,7 @@ class Student(
     telegram: String? = null,
     email: String? = null,
     git: String? = null
-) {
-    companion object {
-        private val nameRegex = Regex("""^[A-Za-zА-Яа-я]+$""")
-        private val phoneRegex = Regex("""^\+?[0-9]{11}$""")
-        private val telegramRegex = Regex("""^@\w{5,32}$""")
-        private val emailRegex = Regex("""^[A-Za-z0-9_+-]+(\.[A-Za-z0-9_+-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)+$""")
-        private val gitRegex = Regex("""^(https?://)?([A-Za-z0-9]+\.)?[A-Za-z0-9]+\.[A-Za-z0-9]+/[A-Za-z0-9_-]+/?$""")
-
-        fun isValidName(value: String) = nameRegex.matches(value)
-        fun isValidLastName(value: String) = value.isEmpty() || isValidName(value)
-        fun isValidPhone(value: String?) = value == null || phoneRegex.matches(value)
-        fun isValidTelegram(value: String?) = value == null || telegramRegex.matches(value)
-        fun isValidEmail(value: String?) = value == null || emailRegex.matches(value)
-        fun isValidGit(value: String?) = value == null || gitRegex.matches(value)
-    }
+) :SuperStudent() {
     var surname = surname
         get() = field
         set(value) {
@@ -58,7 +44,7 @@ class Student(
             if (isValidEmail(value)) field = value
             else throw IllegalArgumentException("Unacceptable email")
         }
-    var git = git
+    override var git = git
         get() = field
         set(value) {
             if (isValidGit(value)) field = value
@@ -115,8 +101,6 @@ class Student(
         return "$str\n"
     }
 
-    fun show() = println(this.toString())
-
     fun checkGit(): Boolean {
         val result = git != null
         println("У студента $surname $name $lastname гит${if (result) " есть" else "а нет"}")
@@ -135,7 +119,7 @@ class Student(
         if (hashMap.containsKey("email")) email = hashMap["email"]
     }
 
-fun getInfo() : String {
+    fun getInfo() : String {
         val git = "git${if (this.git != null) ": ${this.git}" else " not added"}"
         val contact = getContact().let {
             if (it != null) "contact using ${it.first}: ${it.second}" else "no contact information"
