@@ -71,4 +71,10 @@ fun main() {
     println("reading test")
     val studList = Student.readFromTxt("lab2_input.txt")
     studList.forEach { println(it.getInfo()) }
+
+    Student.writeToTxt("lab2_output.txt", studList)
+    val studList2 = Student.readFromTxt("lab2_output.txt")
+    println("writing test")
+    studList2.forEach { println(it.getInfo()) }
+    require(studList2.toString() == studList.toString())
 }
