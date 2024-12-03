@@ -1,4 +1,4 @@
-abstract class Data_list(private val array: List<Any>) {
+abstract class Data_list(protected val array: List<Any>) {
     private val selectedIndices: MutableList<Int> = mutableListOf()
     fun select(number: Int) = selectedIndices.add(number)
     fun getSelected() = selectedIndices.toList()
