@@ -1,0 +1,2 @@
+class Data_list(private val array: List<Any>) {
+}
