@@ -7,14 +7,14 @@ fun main() {
         Student(4, "Шевякин","Артём", "Анатольевич"),
         )
 
-    students.forEach { it.show() }
+    //students.forEach { it.show() }
 
 //    val student1 = Student(5, "Иванов", "Иван", "Иванович", "+79123456789")
 //    val student2 = Student(6, "Иванов", "Иван", "Иванович", "ivanov@example.com", "https://github.com/ivanov")
 //
 //    student1.show()
 //    student2.show()
-
+//
 //    val student3 = Student(mapOf(
 //        "id" to 7,
 //        "surname" to "Шевякин",
@@ -37,15 +37,15 @@ fun main() {
     //val student5 = Student(9, "Иванов", "Иван", "Иванович", "+91915553")
     //val student6 = Student(10, "Иванов", "Иван", "Иванович", "ivanovexample.com", "https://github.comivanov")
 
-    students.forEach { it.checkGit() }
-    students.forEach { it.checkContact() }
-    students[0].set_contacts(mapOf("telegram" to null, "email" to "test123@example.com"))
-    students[0].show()
+//    students.forEach { it.checkGit() }
+//    students.forEach { it.checkContact() }
+//    students[0].set_contacts(mapOf("telegram" to null, "email" to "test123@example.com"))
+//    students[0].show()
 
 
 /////////lab2
     val student5 = Student("5;Иванов;Иван;Иванович;+79123456789;@ivanov;ivanov@example.com;https://github.com/ivanov")
-    student5.show()
+    //student5.show()
     Student("5;I;Am;Megatron;;;decepticon_leader@evil.com;")
     //Test parsing exceptions
     //Student(";;;;;;;")
@@ -57,7 +57,7 @@ fun main() {
     //Student("6;Ф;И;О;abc;;;;")
     //Student("6;Ф;И;О;;@test\n123;;")
 
-    students.forEach { println(it.getInfo()) }
+    //students.forEach { println(it.getInfo()) }
 
     val shortStudents = mutableListOf(
         Student_short(students[0]),
@@ -66,15 +66,32 @@ fun main() {
         Student_short(students[3]),
         Student_short(5, "Student Линдеманн Т.В., git not added, contact using phone: +88005553535")
         )
+//    shortStudents.forEach { it.show() }
+//
+//    println("reading test")
+//    val studList = Student.readFromTxt("lab2_input.txt")
+//    studList.forEach { println(it.getInfo()) }
+//
+//    Student.writeToTxt("lab2_output.txt", studList)
+//    val studList2 = Student.readFromTxt("lab2_output.txt")
+//    println("writing test")
+//    studList2.forEach { println(it.getInfo()) }
+//    require(studList2.toString() == studList.toString())
+
+
+///////lab 2.2
     shortStudents.forEach { it.show() }
-
-    println("reading test")
-    val studList = Student.readFromTxt("lab2_input.txt")
-    studList.forEach { println(it.getInfo()) }
-
-    Student.writeToTxt("lab2_output.txt", studList)
-    val studList2 = Student.readFromTxt("lab2_output.txt")
-    println("writing test")
-    studList2.forEach { println(it.getInfo()) }
-    require(studList2.toString() == studList.toString())
+    val dataList = Data_list_short(shortStudents)
+    val names = dataList.getNames()
+    dataList.select(0)
+    dataList.select(2)
+    println(dataList.getSelected())
+    println(names)
+    val dataTable = dataList.getData()
+    for (i in 0..<dataTable.getRowCount()) {
+        for (j in 0..<dataTable.getColCount()) {
+            print("${dataTable[i, j]} ")
+        }
+        println()
+    }
 }
