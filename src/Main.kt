@@ -1,11 +1,20 @@
 fun main() {
 //////lab1
     val students = mutableListOf<Student>(
-        Student(1, "Иванов","Иван", "Иванович", "+79123456789", "@ivanov", "ivanov@example.com", "https://github.com/ivanov"),
-        Student(2, "Петров","Петр", "Петрович", git= "https://github.com/petrov"),
-        Student(3, "Линдеманн","Тилль", "Вернерович", "+88005553535", email="duhast@gmail.com"),
-        Student(4, "Шевякин","Артём", "Анатольевич"),
-        )
+        Student(
+            1,
+            "Иванов",
+            "Иван",
+            "Иванович",
+            "+79123456789",
+            "@ivanov",
+            "ivanov@example.com",
+            "https://github.com/ivanov"
+        ),
+        Student(2, "Петров", "Петр", "Петрович", git = "https://github.com/petrov"),
+        Student(3, "Линдеманн", "Тилль", "Вернерович", "+88005553535", email = "duhast@gmail.com"),
+        Student(4, "Шевякин", "Артём", "Анатольевич"),
+    )
 
     //students.forEach { it.show() }
 
@@ -65,7 +74,7 @@ fun main() {
         Student_short(students[2]),
         Student_short(students[3]),
         Student_short(5, "Student Линдеманн Т.В., git not added, contact using phone: +88005553535")
-        )
+    )
 //    shortStudents.forEach { it.show() }
 //
 //    println("reading test")
@@ -79,19 +88,124 @@ fun main() {
 //    require(studList2.toString() == studList.toString())
 
 
-///////lab 2.2
-    shortStudents.forEach { it.show() }
-    val dataList = Data_list_short(shortStudents)
-    val names = dataList.getNames()
-    dataList.select(0)
-    dataList.select(2)
-    println(dataList.getSelected())
-    println(names)
-    val dataTable = dataList.getData()
-    for (i in 0..<dataTable.getRowCount()) {
-        for (j in 0..<dataTable.getColCount()) {
-            print("${dataTable[i, j]} ")
+    /////////lab 2.2
+//    shortStudents.forEach { it.show() }
+//    val dataList = Data_list_short(shortStudents)
+//    val names = dataList.getNames()
+//    dataList.select(0)
+//    dataList.select(2)
+//    println(dataList.getSelected())
+//    println(names)
+//    val dataTable = dataList.getData()
+//    for (i in 0..<dataTable.getRowCount()) {
+//        for (j in 0..<dataTable.getColCount()) {
+//            print("${dataTable[i, j]} ")
+//        }
+//        println()
+//    }
+//
+/////lab 3
+    fun printDataTable(dataTable: Data_table) {
+        for (i in 0..<dataTable.getRowCount()) {
+            for (j in 0..<dataTable.getColCount()) {
+                print("${dataTable[i, j]} ")
+            }
+            println()
         }
-        println()
+    }
+
+    println("txt")
+    val studentsformat = Studlist(TXTFormatStrategy())
+    studentsformat.load("lab2_input.txt")
+    println(studentsformat.getStudentShortCount())
+    for (id in -1..6) {
+        try {
+            println(studentsformat.getStudentById(id).toStringRow())
+        } catch (e: IllegalArgumentException) {
+            println(e.message)
+        }
+    }
+    println()
+
+    printDataTable(studentsformat.getStudentShortList(1, 3).getData())
+    println("=========================")
+    printDataTable(studentsformat.getStudentShortList(1, 0).getData())
+    println("=========================")
+//    printDataTable(students.getStudentShortList(0, 3).getData())
+//    println("=========================")
+//    printDataTable(students.getStudentShortList(1, -1).getData())
+//    println("=========================")
+    printDataTable(studentsformat.getStudentShortList(1, 100).getData())
+    println("=========================")
+    printDataTable(studentsformat.getStudentShortList(2, 100).getData())
+    println("=========================")
+    printDataTable(studentsformat.getStudentShortList(3, 1).getData())
+    println("=========================")
+    printDataTable(studentsformat.getStudentShortList(2, 3).getData())
+    println("=========================")
+    printDataTable(studentsformat.getStudentShortList(1, 5).getData())
+    println("=========================")
+    printDataTable(studentsformat.getStudentShortList(1, 6).getData())
+    println()
+
+    studentsformat.sortByStudentName()
+    printDataTable(studentsformat.getStudentShortList(1, 5).getData())
+    println()
+
+    students.add(Student(0, "Новый", "Студент", "Хе-хе"))
+    printDataTable(studentsformat.getStudentShortList(1, 100).getData())
+    println(studentsformat.getStudentById(6).toStringRow())
+    studentsformat.replace(6, Student(0, "Изменённый", "Студент", "Хе-хе"))
+    println(studentsformat.getStudentById(6).toStringRow())
+    println()
+    studentsformat.remove(6)
+    for (id in 1..7) {
+        try {
+            println(studentsformat.getStudentById(id).toStringRow())
+        } catch (e: IllegalArgumentException) {
+            println(e.message)
+        }
+    }
+    println()
+    studentsformat.add(Student(0, "Вернувшийся", "Студент", "Хе-хе"))
+    studentsformat.add(Student(0, "Студент", "Номер", "Восемь"))
+    for (id in 1..9) {
+        try {
+            println(studentsformat.getStudentById(id).toStringRow())
+        } catch (e: IllegalArgumentException) {
+            println(e.message)
+        }
+    }
+    println(studentsformat.getStudentShortCount())
+    studentsformat.save("lab3_output.txt")
+
+    //json
+    println("json")
+    studentsformat.formatStrategy = JSONFormatStrategy()
+    val students2 = Studlist(JSONFormatStrategy())
+    students2.load("lab3_output.json")
+    println(studentsformat.getStudentShortCount())
+    for (id in -1..7) {
+        try {
+            println(studentsformat.getStudentById(id).toStringRow())
+        } catch (e: IllegalArgumentException) {
+            println(e.message)
+        }
+    }
+
+    //yaml
+    println("yaml")
+
+
+    studentsformat.formatStrategy = YAMLFormatStrategy()
+    students2.formatStrategy = YAMLFormatStrategy()
+    students2.load("lab3_output.yaml")
+    println(studentsformat.getStudentShortCount())
+    for (id in -1..7) {
+        try {
+            println(studentsformat.getStudentById(id).toStringRow())
+        } catch (e: IllegalArgumentException) {
+            println(e.message)
+        }
     }
 }
