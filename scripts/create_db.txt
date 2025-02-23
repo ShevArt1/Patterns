@@ -1,10 +1,10 @@
 CREATE TABLE Student (
-    id INT IDENTITY(1,1) PRIMARY KEY,
-    surname NVARCHAR(255) NOT NULL CHECK (surname <> ''),
-    name NVARCHAR(255) NOT NULL CHECK (name <> ''),
-    lastname NVARCHAR(255) NOT NULL DEFAULT '',
-    phone NVARCHAR(50),
-    telegram NVARCHAR(50),
-    email NVARCHAR(255),
-    git NVARCHAR(255)
-);
+                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                surname TEXT NOT NULL CHECK(surname != ''),
+                name TEXT NOT NULL CHECK(name != ''),
+                lastname TEXT NOT NULL DEFAULT "",
+                phone TEXT,
+                telegram TEXT,
+                email TEXT,
+                git TEXT
+            );
