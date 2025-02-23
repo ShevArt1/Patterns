@@ -222,8 +222,8 @@ fun main() {
         }
     }
 
-    val students = StudentListDB("jdbc:sqlite:students.db")
-
+    val students = StudentListDB()
+    Database.connect()
     println(students.getStudentById(1)?.toStringRow())
     println(students.getStudentById(0))
     println()
