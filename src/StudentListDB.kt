@@ -1,8 +1,8 @@
 import java.sql.DriverManager
 
-class StudentListDB {
+class StudentListDB : StudentListInterface {
 
-    fun getStudentById(id: Int) : Student? {
+    override fun getStudentById(id: Int) : Student? {
         val resultSet = Database.executeQuery("SELECT * FROM Student WHERE \"id\" = $id")
         return if (resultSet.next()) Student(mapOf(
             "id" to resultSet.getInt("id"),
@@ -16,7 +16,7 @@ class StudentListDB {
         )) else null
     }
 
-    fun getStudentShortList(k: Int, n: Int) : Data_list_short {
+    override fun getStudentShortList(k: Int, n: Int) : Data_list_short {
         if (k < 1) throw IllegalArgumentException("Значение k должно быть больше или равно 1")
         if (n < 0) throw IllegalArgumentException("Значение n не должно быть отрицательным")
         val firstElem = (k - 1) * n
@@ -38,11 +38,11 @@ class StudentListDB {
         return Data_list_short(studentsSlice)
     }
 
-    fun add(student: Student) {
+    override fun add(student: Student) : Boolean {
         val sql = "INSERT INTO Student" +
                 "(\"surname\", \"name\", \"lastname\", \"phone\", \"telegram\", \"email\", \"git\")" +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)"
-        Database.executeUpdate(sql) {
+        return Database.executeUpdate(sql) {
             it.setString(1, student.surname)
             it.setString(2, student.name)
             it.setString(3, student.lastname)
@@ -50,14 +50,14 @@ class StudentListDB {
             it.setString(5, student.telegram)
             it.setString(6, student.email)
             it.setString(7, student.git)
-        }
+        }>0
     }
 
-    fun replace(id: Int, newStudent: Student) {
+    override fun replace(id: Int, newStudent: Student) : Boolean {
         val sql = "UPDATE Student SET \"surname\" = ?, \"name\" = ?, \"lastname\" = ?," +
                 "\"phone\" = ?, \"telegram\" = ?, \"email\" = ?, \"git\" = ?" +
                 "WHERE id = ?"
-        Database.executeUpdate(sql) {
+        return Database.executeUpdate(sql) {
             it.setString(1, newStudent.surname)
             it.setString(2, newStudent.name)
             it.setString(3, newStudent.lastname)
@@ -66,15 +66,15 @@ class StudentListDB {
             it.setString(6, newStudent.email)
             it.setString(7, newStudent.git)
             it.setInt(8, id)
-        }
+        }>0
     }
 
-    fun remove(id: Int) : Boolean {
+    override fun remove(id: Int) : Boolean {
         val sql = "DELETE FROM Student WHERE \"id\" = ?"
         return Database.executeUpdate(sql) { it.setInt(1, id) } > 0
     }
 
-    fun getStudentShortCount() : Int {
+    override fun getStudentShortCount() : Int {
         val resultSet = Database.executeQuery("SELECT count(*) AS cnt FROM Student")
         resultSet.next()
         return resultSet.getInt(1)

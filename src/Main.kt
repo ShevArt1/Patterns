@@ -1,6 +1,14 @@
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.SQLException
+fun printDataTable(dataTable: Data_table) {
+    for (i in 0..<dataTable.getRowCount()) {
+        for (j in 0..<dataTable.getColCount()) {
+            print("${dataTable[i, j]} ")
+        }
+        println()
+    }
+}
 fun main() {
 //////lab1
 //    val students = mutableListOf<Student>(
@@ -213,35 +221,64 @@ fun main() {
 //    }
 
     //////lab4
-    fun printDataTable(dataTable: Data_table) {
-        for (i in 0..<dataTable.getRowCount()) {
-            for (j in 0..<dataTable.getColCount()) {
-                print("${dataTable[i, j]} ")
-            }
-            println()
-        }
-    }
 
-    val students = StudentListDB()
+//
+//    val students = StudentListDB()
+//    Database.connect()
+//    println(students.getStudentById(1)?.toStringRow())
+//    println(students.getStudentById(0))
+//    println()
+//    printDataTable(students.getStudentShortList(3, 2).getData())
+//    println()
+//    printDataTable(students.getStudentShortList(2, 4).getData())
+//    println()
+//    println(students.getStudentShortCount())
+//    students.add(Student(0, "Новый", "Студент", "Хе-хе"))
+//    println(students.getStudentShortCount())
+//    println(students.getStudentById(8)?.toStringRow())
+//    println(students.getStudentById(9)?.toStringRow())
+//    students.remove(7)
+//    println(students.remove(5))
+//    students.add(Student(0, "Ещё", "Студент", "", email = "123@456.789"))
+//    students.replace(8, Student(0, "Изменённый", "Студент", "", telegram = "@skullemoji"))
+
+///////lab5
+
+    val studentsDB = StudentListDB()
     Database.connect()
-    println(students.getStudentById(1)?.toStringRow())
-    println(students.getStudentById(0))
-    println()
-    printDataTable(students.getStudentShortList(3, 2).getData())
-    println()
-    printDataTable(students.getStudentShortList(2, 4).getData())
-    println()
-    println(students.getStudentShortCount())
-    students.add(Student(0, "Новый", "Студент", "Хе-хе"))
-    println(students.getStudentShortCount())
-    println(students.getStudentById(8)?.toStringRow())
-    println(students.getStudentById(9)?.toStringRow())
-    students.remove(7)
-    println(students.remove(5))
-    students.add(Student(0, "Ещё", "Студент", "", email = "123@456.789"))
-    students.replace(8, Student(0, "Изменённый", "Студент", "", telegram = "@skullemoji"))
 
+    val studentsTXT = Studlist(TXTFormatStrategy())
+    studentsTXT.load("lab2_input.txt")
+    val studentsJSON = Studlist(JSONFormatStrategy())
+    studentsJSON.load("lab3_output.json")
 
+    val students1 = StudentList(studentsDB)
+    val students2 = StudentList(StudentListFileAdapter(studentsTXT))
+    val students3 = StudentList(StudentListFileAdapter(studentsJSON))
+
+    for (students in listOf(students1, students2, students3)) {
+        println("BEGIN")
+        println()
+        println(students.getStudentById(1)?.toStringRow())
+        println(students.getStudentById(0))
+        println()
+        printDataTable(students.getStudentShortList(3, 2).getData())
+        println()
+        printDataTable(students.getStudentShortList(2, 4).getData())
+        println()
+        println(students.getStudentShortCount())
+        students.add(Student(0, "Новый", "Студент", "Хе-хе"))
+        println(students.getStudentShortCount())
+        println(students.getStudentById(8)?.toStringRow())
+        println(students.getStudentById(9)?.toStringRow())
+        students.remove(7)
+        println(students.remove(5))
+        students.add(Student(0, "Ещё", "Студент", "", email = "123@456.789"))
+        students.replace(8, Student(0, "Изменённый", "Студент", "", telegram = "@skullemoji"))
+        println(students.remove(0))
+        println(students.remove(100))
+        println()
+    }
 
 
 }
